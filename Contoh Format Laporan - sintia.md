@@ -56,7 +56,7 @@ Data Loading yaitu memuat data yang akan diolah pada proses Modeling nanti.
 
 Exploratory Data Analysis (EDA) merupakan proses pengenalan data untuk menganalisis karakteristik, menemukan pola, anomali dan memeriksa asumsi data. teknik tersebut juga menggunakan bantuan statistikdan visualisasi grafis. 
 
-- **Deskripsi Variable**
+- **Deskripsi Variable**.
 Pada pembuka Data Understanding, telah dijelaskan variable yang akan digunakan. selanjutnya akan kita cek informasi pada dataset dengan beberapa perintah dibawah ini. 
 
 
@@ -71,7 +71,7 @@ Hasilnya terdapat tipe data yang digunakan, diantaranya object (model, transsmis
  1. data kategorial (model, transmission, dan fuelType)
  2. data numerial (year, price, mileage, tax, mpg dan engineSize)
 
-- **Penanganan Missing Value**
+- **Penanganan Missing Value**.
 untuk memastikan ada tidaknya missing value, kita dapat melakukan deskripsi statistik dengan penggunakan fungsi describe()
 
 ```python
@@ -117,7 +117,7 @@ cars.describe()
 
 hasilnya nilai nimimum berubah menjadi 1 dan tidak terdapat missing value pada dataset tersebut. 
 
-- **Unvariate Analysis**
+- **Unvariate Analysis**.
 Unvariate analysis merupakan proses untuk mengeksplorasi dan menjelaskan setiap variabel dalam kumpulan data secara terpisah. 
 
 sebelum melakukan unvariate analysis, terlebih dahulu kita membagi semua fitur menjadi dua kelompok fitur yaitu fitur numerik dan fitur kategorikal. 
@@ -139,9 +139,64 @@ count.plot(kind='bar', title=feature);
 ![total fitur model](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-08.jpg?raw=true)
 ![bar chart fitur](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-09.jpg?raw=true)
 
+fitur transmission
+```python
+feature = categorical_features[1]
+count = cars[feature].value_counts()
+percent = 100*cars[feature].value_counts(normalize=True)
+df = pd.DataFrame({'jumlah sampel':count, 'persentase':percent.round(1)})
+print(df)
+count.plot(kind='bar', title=feature);
+```
+![bar chart fitur](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-10.jpg?raw=true)
+
+fitur fuelType
+```python
+feature = categorical_features[2]
+count = cars[feature].value_counts()
+percent = 100*cars[feature].value_counts(normalize=True)
+df = pd.DataFrame({'jumlah sampel':count, 'persentase':percent.round(1)})
+print(df)
+count.plot(kind='bar', title=feature);
+```
+![bar chart fitur](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-11.jpg?raw=true)
+
+Selanjutnya, pada fitur numerikal
+```python
+cars.hist(bins=50, figsize=(20,15))
+plt.show()
+```
+![bar chart fitur](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-12.jpg?raw=true)
+
+- **Multivariate Analysis**.
+Multivariate analysis merupakan proses eksplorasi yang melibatkan banyak (dua atau lebih) variabel pada data. dalam hal ini kita akan menganalisis keterkaitan/korelasi antara fitur target (price) dengan fitur lainnya. 
+
+fitur kategorikal.
+
+```python
+cat_features = cars.select_dtypes(include='object').columns.to_list()
+ 
+for col in cat_features:
+  sns.catplot(x=col, y="price", kind="bar", dodge=False, height = 4, aspect = 3,  data=cars, palette="Set3")
+  plt.title("Rata-rata 'price' Relatif terhadap - {}".format(col))
+```
+![bar chart fitur](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-13.jpg?raw=true)
+![bar chart fitur](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-14.jpg?raw=true)
+![bar chart fitur](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-15.jpg?raw=true)
+
+
+fitur numerikal.
+```python
+sns.pairplot(cars, diag_kind = 'kde')
+```
+![bar chart fitur](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-16.jpg?raw=true)
+
+
 ## Data Preparation
 - Encoding Categorical Feature
 teknik ini digunakan untuk mengubah niai pada fitur kategori menjadi tipe numerik agar dapat di proses. perintah yang digunakan yaitu get_dummies(). 
+
+
 
 - train test split
 teknik digunakan untuk membagi dataset menjadi data latih dan data uji. dalam kasus ini, pembagiannya 90:10 
