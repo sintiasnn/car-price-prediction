@@ -56,7 +56,7 @@ Data Loading yaitu memuat data yang akan diolah pada proses Modeling nanti.
 
 Exploratory Data Analysis (EDA) merupakan proses pengenalan data untuk menganalisis karakteristik, menemukan pola, anomali dan memeriksa asumsi data. teknik tersebut juga menggunakan bantuan statistikdan visualisasi grafis. 
 
-- **Deskripsi Variable** \
+**Deskripsi Variable** \
 Pada pembuka Data Understanding, telah dijelaskan variable yang akan digunakan. selanjutnya akan kita cek informasi pada dataset dengan beberapa perintah dibawah ini. 
 
 
@@ -68,10 +68,10 @@ Pada pembuka Data Understanding, telah dijelaskan variable yang akan digunakan. 
  
 Hasilnya terdapat tipe data yang digunakan, diantaranya object (model, transsmission, fuelType), int(year, price, mileage, tax), dan float(mpg dan engineSize). Jika dikelompokan, maka:
 
- 1. data kategorial (model, transmission, dan fuelType)
- 2. data numerial (year, price, mileage, tax, mpg dan engineSize)
+ - data kategorial (model, transmission, dan fuelType)
+ - data numerial (year, price, mileage, tax, mpg dan engineSize)
 
-- **Penanganan Missing Value**.
+**Penanganan Missing Value** \
 untuk memastikan ada tidaknya missing value, kita dapat melakukan deskripsi statistik dengan penggunakan fungsi describe()
 
 ```python
@@ -117,7 +117,7 @@ cars.describe()
 
 hasilnya nilai nimimum berubah menjadi 1 dan tidak terdapat missing value pada dataset tersebut. 
 
-- **Unvariate Analysis**.
+**Unvariate Analysis** \
 Unvariate analysis merupakan proses untuk mengeksplorasi dan menjelaskan setiap variabel dalam kumpulan data secara terpisah. 
 
 sebelum melakukan unvariate analysis, terlebih dahulu kita membagi semua fitur menjadi dua kelompok fitur yaitu fitur numerik dan fitur kategorikal. 
@@ -139,7 +139,7 @@ count.plot(kind='bar', title=feature);
 ![total fitur model](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-08.jpg?raw=true)
 ![bar chart fitur](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-09.jpg?raw=true)
 
-fitur transmission
+fitur transmission \
 ```python
 feature = categorical_features[1]
 count = cars[feature].value_counts()
@@ -150,7 +150,7 @@ count.plot(kind='bar', title=feature);
 ```
 ![bar chart fitur](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-10.jpg?raw=true)
 
-fitur fuelType
+fitur fuelType \
 ```python
 feature = categorical_features[2]
 count = cars[feature].value_counts()
@@ -168,11 +168,10 @@ plt.show()
 ```
 ![bar chart fitur](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-12.jpg?raw=true)
 
-- **Multivariate Analysis**.
+**Multivariate Analysis** \
 Multivariate analysis merupakan proses eksplorasi yang melibatkan banyak (dua atau lebih) variabel pada data. dalam hal ini kita akan menganalisis keterkaitan/korelasi antara fitur target (price) dengan fitur lainnya. 
 
-fitur kategorikal.
-
+fitur kategorikal \
 ```python
 cat_features = cars.select_dtypes(include='object').columns.to_list()
  
@@ -185,27 +184,77 @@ for col in cat_features:
 ![bar chart fitur](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-15.jpg?raw=true)
 
 
-fitur numerikal.
+fitur numerikal \
 ```python
 sns.pairplot(cars, diag_kind = 'kde')
 ```
 ![bar chart fitur](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-16.jpg?raw=true)
+![correlation matrix](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-17.jpg?raw=true)
 
+```python
+cars.drop(['tax'], inplace=True, axis=1)
+cars.head()
+```
+![drop result](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-18.jpg?raw=true)
 
 ## Data Preparation
-- Encoding Categorical Feature
+- Encoding Categorical Feature \
 teknik ini digunakan untuk mengubah niai pada fitur kategori menjadi tipe numerik agar dapat di proses. perintah yang digunakan yaitu get_dummies(). 
 
+```python
+from sklearn.preprocessing import  OneHotEncoder
+cars = pd.concat([cars, pd.get_dummies(cars['model'], prefix='model', drop_first=True)],axis=1)
+cars = pd.concat([cars, pd.get_dummies(cars['transmission'], prefix='transmission', drop_first=True)],axis=1)
+cars = pd.concat([cars, pd.get_dummies(cars['fuelType'], prefix='fuelType', drop_first=True)],axis=1)
+cars.drop(['model','transmission','fuelType'], axis=1, inplace=True)
+cars.head()
+```
+![encoding result](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-19.jpg?raw=true)
 
 
-- train test split
+- train test split \
 teknik digunakan untuk membagi dataset menjadi data latih dan data uji. dalam kasus ini, pembagiannya 90:10 
 
-- standarisasi 
-dengan melakukan pengurangan mean kemudian membaginya dengan nilai standar deviasi. 
+```python
+from sklearn.model_selection import train_test_split
+ 
+X = cars.drop(["price"],axis =1)
+y = cars["price"]
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.1, random_state = 123)
+```
+```python
+print(f'Total # of sample in whole dataset: {len(X)}')
+print(f'Total # of sample in train dataset: {len(X_train)}')
+print(f'Total # of sample in test dataset: {len(X_test)}') 
+```
+![hasil split](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-19a.jpg?raw=true)
+
+- standaritation \
+Tujuan standarisasi adalah agar performa algoritma Machine Learning lebih baik serta dapat mempermudah data diolah oleh algoritma. Standarisasi dilakukan dengan mengurangi mean kemudian membaginya dengan milai standar deviasi untuk menggeser distribusi. Kita akan menggunakan library scikitlearn dengan teknik StandarScaler.
+
+kita terapkan standarisasi pada data latih, sedangkan pada tahap evaluasi diterapkan standarisasi pada data uji
+
+```python
+from sklearn.preprocessing import StandardScaler
+ 
+numerical_features = ['year', 'mileage','mpg','engineSize']
+scaler = StandardScaler()
+scaler.fit(X_train[numerical_features])
+X_train[numerical_features] = scaler.transform(X_train.loc[:, numerical_features])
+X_train[numerical_features].head()
+```
+![standarisasi](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-20.jpg?raw=true)
+
+cek hasil standarisasi 
+```python
+X_train[numerical_features].describe().round(4)
+```
+![standarisasi](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-21.jpg?raw=true)
 
 ## Modeling
+Model yang akan digunakan dalam menyelesaikan permasalahan prediksi harga mobil ini, diantaranya
 
+* K-Nearest Neigbour
 
 ## Evaluation
 Bagian ini menjelaskan mengenai metrik evaluasi yang digunakan untuk mengukur kinerja model. Sebagai contoh, Anda memiih kasus klasifikasi dan menggunakan metrik **akurasi, precision, recall, dan F1 score**. Jelaskan mengenai beberapa hal berikut:
