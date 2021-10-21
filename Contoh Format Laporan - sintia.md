@@ -56,7 +56,7 @@ Data Loading yaitu memuat data yang akan diolah pada proses Modeling nanti.
 
 Exploratory Data Analysis (EDA) merupakan proses pengenalan data untuk menganalisis karakteristik, menemukan pola, anomali dan memeriksa asumsi data. teknik tersebut juga menggunakan bantuan statistikdan visualisasi grafis. 
 
-- **Deskripsi Variable**.
+- **Deskripsi Variable** \
 Pada pembuka Data Understanding, telah dijelaskan variable yang akan digunakan. selanjutnya akan kita cek informasi pada dataset dengan beberapa perintah dibawah ini. 
 
 
