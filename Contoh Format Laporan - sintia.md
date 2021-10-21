@@ -1,9 +1,9 @@
 # Laporan Proyek Machine Learning - Ni Putu Sintia Wati
 
 ## Domain Proyek
-mobil sudah menjadi sara transportasi yang sebagian besar orang telah memilikinya. Terdapat berbagai merek dan jenis mobil dengan spesifik yang memadai. Model bisnis yang diterapkan yaitu sebagai tim marketing, yang bertugas untuk menentukan harga produk yang akan dipasarkan. Para konsumen mencari informasi baik dari situs asli atau katalog mobil yang tersedia. Untuk efisiensi, kita akan menerapkan teknik predictive modelling untuk memprediksi harga mobil tersebut sehingga dapat memudahkan konsumen dalam menentukan model mobil yang ingin dibelinya. Merek mobil yang dijadikan contoh yakni merek Audi.
+mobil sudah menjadi sarana transportasi yang sebagian besar orang telah memilikinya. Terdapat berbagai merek dan jenis mobil dengan spesifik yang memadai. Model bisnis yang diterapkan yaitu sebagai tim marketing, yang bertugas untuk menentukan harga produk yang akan dipasarkan. Para konsumen mencari informasi baik dari situs asli atau katalog mobil yang tersedia. 
 
-Dalam penjualannya, harga mobil dipengaruhi oleh fitur khusus, seperti model, tahun registrasi, harga (dalam satuan euro), jenis transmisi,jarak tempuh, jenis bahan bakar, pajak, mpg(penggunaan bahan bakar), dan kapasitas mesin. 
+Untuk efisiensi, kita akan menerapkan teknik predictive modelling untuk memprediksi harga mobil tersebut sehingga dapat memudahkan konsumen dalam menentukan model mobil yang ingin dibelinya. Merek mobil yang dijadikan contoh yakni merek Audi. Dalam penjualannya, harga mobil dipengaruhi oleh fitur khusus, seperti model, tahun registrasi, harga (dalam satuan euro), jenis transmisi,jarak tempuh, jenis bahan bakar, pajak, mpg(penggunaan bahan bakar), dan kapasitas mesin. 
 
 ## Business Understanding
 ### Problem Statements
@@ -38,6 +38,34 @@ Dataset ini memiliki dimensi 10668 x 9 dengan variable-variable sebagai berikut:
 - tax : pajak
 - mpg : miles per gallon
 - engineSize : ukuran mesin
+
+sebelum masuk ke tahap selanjutnya, terdapat tahapan yang harus dilakukan diantaranya Data Loading dan Data Analysis. 
+
+**Data Loading**
+Data Loading yaitu memuat data yang akan diolah pada proses Modeling nanti. 
+
+   memuat dataset ke notebook
+   ```python
+    data = 'C:/Users/HP/Downloads/car-price-prediction/audi.csv'
+    cars = pd.read_csv(data)
+    cars.head(2)
+   ```
+   
+**Data Analysis**
+Exploratory Data Analysis (EDA) merupakan proses pengenalan data untuk menganalisis karakteristik, menemukan pola, anomali dan memeriksa asumsi data. teknik tersebut juga menggunakan bantuan statistikdan visualisasi grafis. 
+
+Pada pembuka Data Understanding, telah dijelaskan variable yang akan digunakan. selanjutnya akan kita cek ukuran dataset serta informasi pada dataset dengan beberapa perintah dibawah ini. 
+
+  cek ukuran dataset :
+  ```python
+  cars.shape
+  ```
+  cek informasi pada dataset:
+  ```python
+  cars.info()
+  ```
+  raw
+  
 
 ## Data Preparation
 - Encoding Categorical Feature
