@@ -56,7 +56,7 @@ Data Loading yaitu memuat data yang akan diolah pada proses Modeling nanti.
 
 Exploratory Data Analysis (EDA) merupakan proses pengenalan data untuk menganalisis karakteristik, menemukan pola, anomali dan memeriksa asumsi data. teknik tersebut juga menggunakan bantuan statistikdan visualisasi grafis. 
 
-**Deskripsi Variable**
+- **Deskripsi Variable**
 Pada pembuka Data Understanding, telah dijelaskan variable yang akan digunakan. selanjutnya akan kita cek informasi pada dataset dengan beberapa perintah dibawah ini. 
 
 
@@ -64,15 +64,80 @@ Pada pembuka Data Understanding, telah dijelaskan variable yang akan digunakan. 
   ```python
   cars.info()
   ```
- ![hasil info](https://github.com/sintiasnn/car-price-prediction/blob/15de156c8db08394c8b3efd689da05133b14fb46/picture-01.jpg)
+ ![hasil info](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-01.jpg?raw=true)
  
 Hasilnya terdapat tipe data yang digunakan, diantaranya object (model, transsmission, fuelType), int(year, price, mileage, tax), dan float(mpg dan engineSize). Jika dikelompokan, maka:
 
-- data kategorial (model, transmission, dan fuelType)
-- data numerial (year, price, mileage, tax, mpg dan engineSize)
+ 1. data kategorial (model, transmission, dan fuelType)
+ 2. data numerial (year, price, mileage, tax, mpg dan engineSize)
 
+- **Penanganan Missing Value**
+untuk memastikan ada tidaknya missing value, kita dapat melakukan deskripsi statistik dengan penggunakan fungsi describe()
 
-  
+```python
+cars.info()
+```
+
+![hasil deskripsi](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-02.jpg?raw=true)
+
+Berdasarkan output diatas, terdapat dua variable dengan nilai minimum 0 yaitu pada variabel tax dan engineSize. Hal tersebut terindikasi adanya missing value. Selanjutnya kita cek pada kedua variabel jumlah data yang memiliki nilai 0. 
+
+```python
+tax = (cars.tax == 0).sum()
+engineSize = (cars.engineSize == 0).sum()
+print("nilai 0 pada tax : ",tax)
+print("nilai 0 pada engineSize : ",engineSize)
+```
+![jumlah nilai 0](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-03.jpg?raw=true)
+
+untuk memastikan kembali, kita dapat mengetahui data yang memiliki nilai 0 tersebut dengan fungsi loc[] dengan kondisi nilaiVariable==0
+
+```python
+cars.loc[(cars['tax']==0)]
+```
+![nilai 0 pada tax](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-04.jpg?raw=true)
+
+```python
+cars.loc[(cars['engineSize']==0)]
+```
+![nilai 0 pada engineSize](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-05.jpg?raw=true)
+![nilai 0 pada engineSize](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-06.jpg?raw=true)
+
+Jika telah ditelusuri, kita dapat menghapus data tersebut lalu melakukan kembali deskripsi statistik dengan fungsi describe()
+
+```python
+cars = cars.loc[(cars[['tax']] >= 1).all(axis=1)]
+cars = cars.loc[(cars[['engineSize']] >= 1).all(axis=1)]
+```
+
+```python
+cars.describe()
+```
+![hasil deskripsi kedua](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-07.jpg?raw=true)
+
+hasilnya nilai nimimum berubah menjadi 1 dan tidak terdapat missing value pada dataset tersebut. 
+
+- **Unvariate Analysis**
+Unvariate analysis merupakan proses untuk mengeksplorasi dan menjelaskan setiap variabel dalam kumpulan data secara terpisah. 
+
+sebelum melakukan unvariate analysis, terlebih dahulu kita membagi semua fitur menjadi dua kelompok fitur yaitu fitur numerik dan fitur kategorikal. 
+
+```python
+numerical_features = ['price', 'year', 'mileage', 'tax', 'mpg', 'engineSize']
+categorical_features = ['model', 'transmission', 'fuelType']
+```
+lalu dimulai dengan menganalisis fitur kategorial. diawali dengan fitur model
+
+```python
+feature = categorical_features[0]
+count = cars[feature].value_counts()
+percent = 100*cars[feature].value_counts(normalize=True)
+df = pd.DataFrame({'jumlah sampel':count, 'persentase':percent.round(1)})
+print(df)
+count.plot(kind='bar', title=feature);
+```
+![total fitur model](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-08.jpg?raw=true)
+![bar chart fitur](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-09.jpg?raw=true)
 
 ## Data Preparation
 - Encoding Categorical Feature
