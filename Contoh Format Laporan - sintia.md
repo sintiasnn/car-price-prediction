@@ -41,7 +41,8 @@ Dataset ini memiliki dimensi 10668 x 9 dengan variable-variable sebagai berikut:
 
 sebelum masuk ke tahap selanjutnya, terdapat tahapan yang harus dilakukan diantaranya Data Loading dan Data Analysis. 
 
-**Data Loading**
+### Data Loading
+
 Data Loading yaitu memuat data yang akan diolah pada proses Modeling nanti. 
 
    memuat dataset ke notebook
@@ -51,20 +52,26 @@ Data Loading yaitu memuat data yang akan diolah pada proses Modeling nanti.
     cars.head(2)
    ```
    
-**Data Analysis**
+### Data Analysis
+
 Exploratory Data Analysis (EDA) merupakan proses pengenalan data untuk menganalisis karakteristik, menemukan pola, anomali dan memeriksa asumsi data. teknik tersebut juga menggunakan bantuan statistikdan visualisasi grafis. 
 
-Pada pembuka Data Understanding, telah dijelaskan variable yang akan digunakan. selanjutnya akan kita cek ukuran dataset serta informasi pada dataset dengan beberapa perintah dibawah ini. 
+**Deskripsi Variable**
+Pada pembuka Data Understanding, telah dijelaskan variable yang akan digunakan. selanjutnya akan kita cek informasi pada dataset dengan beberapa perintah dibawah ini. 
 
-  cek ukuran dataset :
-  ```python
-  cars.shape
-  ```
+
   cek informasi pada dataset:
   ```python
   cars.info()
   ```
-  raw
+ ![hasil info](https://github.com/sintiasnn/car-price-prediction/blob/15de156c8db08394c8b3efd689da05133b14fb46/picture-01.jpg)
+ 
+Hasilnya terdapat tipe data yang digunakan, diantaranya object (model, transsmission, fuelType), int(year, price, mileage, tax), dan float(mpg dan engineSize). Jika dikelompokan, maka:
+
+- data kategorial (model, transmission, dan fuelType)
+- data numerial (year, price, mileage, tax, mpg dan engineSize)
+
+
   
 
 ## Data Preparation
