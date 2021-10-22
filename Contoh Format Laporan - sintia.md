@@ -261,9 +261,17 @@ models = pd.DataFrame(index=['train_mse', 'test_mse'],
                       columns=['KNN', 'RandomForest', 'Boosting'])
 ```
 
-* K-Nearest Neighbor\
-cara kerja :
+* K-Nearest Neighbor \
 
+cara kerja :
+      a. tentukan parameter k \
+      b. Hitung jarak antara data yang akan dievaluasi dengan semua pelatihan \
+      c. urutkan jarak yang berbentuk menaik \
+      d. tentukan jarak trdekat sampai urutan k \
+      e. pasangkan kelas yang bersesuaian \
+      f. cari jumlah kelas dari tetangga yang terdekat dan tetapkan kelas tersebut sebagai kelas data yang akan dievaluasi \
+
+penerapan pada python :
 ```python
 from sklearn.neighbors import KNeighborsRegressor
  
@@ -272,9 +280,12 @@ knn.fit(X_train, y_train)
 y_pred_knn = knn.predict(X_train)
 ```
 
-* Random Forest\
-cara kerja : 
+* Random Forest \
 
+cara kerja : 
+Random forest  adalah kombinasi dari  masing – masing tree yang baik kemudian dikombinasikan  ke dalam satu model. Random Forest bergantung pada sebuah nilai vector random dengan distribusi yang sama pada semua pohon yang masing masing decision tree memiliki kedalaman yang maksimal. 
+
+penerapan pada python:
 ```python
 from sklearn.metrics import mean_squared_error
 from sklearn.ensemble import RandomForestRegressor
@@ -288,7 +299,9 @@ models.loc['train_mse','RandomForest'] = mean_squared_error(y_pred=RF.predict(X_
 
 * Boosting\
 cara kerja : 
+Algoritma boosting bekerja dengan membangun model dari data latih. Kemudian ia membuat model kedua yang bertugas memperbaiki kesalahan dari model pertama. Model ditambahkan sampai data latih terprediksi dengan baik atau telah mencapai jumlah maksimum model untuk ditambahkan. 
 
+penerapan pada python : 
 ```python
 from sklearn.ensemble import AdaBoostRegressor
  
@@ -298,7 +311,46 @@ models.loc['train_mse','Boosting'] = mean_squared_error(y_pred=boosting.predict(
 ```
 
 ## Evaluation
-karena masalah yang diselesaikan termasuk regresi, maka metrik evaluasi yang digunakan yaitu MSE (Mean Sqared Error)
+Karena masalah yang diselesaikan termasuk regresi, maka metrik yang akan kita gunakan pada prediksi ini adalah MSE atau Mean Squared Error yang menghitung selisih rata-rata nilai sebenarnya dengan nilai prediksi. 
+
+Sebelum menghitung nilai MSE, kita akan lakukan scaling fitur numerik pada data uji. Tujuannya untuk menghindari kebocoraan data. 
+
+```python
+X_test.loc[:, numerical_features] = scaler.transform(X_test[numerical_features])
+```
+
+Selanjutnya dilakukan evaluasi terhadap 3 model algoritma machine learning dengan metrik MSE. 
+
+```python
+mse = pd.DataFrame(columns=['train', 'test'], index=['KNN','RF','Boosting'])
+model_dict = {'KNN': knn, 'RF': RF, 'Boosting': boosting}
+for name, model in model_dict.items():
+    mse.loc[name, 'train'] = mean_squared_error(y_true=y_train, y_pred=model.predict(X_train))/1e3 
+    mse.loc[name, 'test'] = mean_squared_error(y_true=y_test, y_pred=model.predict(X_test))/1e3
+ 
+mse
+```
+![hasil evaluasi](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-22.jpg?raw=true)
+
+![bar chart metrik](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-23.jpg?raw=true)
+
+Untuk mengujinya, kita dapat membuat prediksi dengan beberapa harga dari dataset. 
+
+```python
+prediksi = X_test.iloc[:1].copy()
+pred_dict = {'y_true':y_test[:1]}
+for name, model in model_dict.items():
+    pred_dict['prediksi_'+name] = model.predict(prediksi).round(1)
+ 
+pd.DataFrame(pred_dict)
+```
+![hasil uji](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-24.jpg?raw=true)
+
+Hasil uji menunjukkan bahwa prediksi dengan Random Forest memberikan hasil yang mendekati. 
+
+
+
+
 
 
 
