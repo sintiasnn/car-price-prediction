@@ -252,19 +252,57 @@ X_train[numerical_features].describe().round(4)
 ![standarisasi](https://github.com/sintiasnn/car-price-prediction/blob/main/picture-21.jpg?raw=true)
 
 ## Modeling
-Model yang akan digunakan dalam menyelesaikan permasalahan prediksi harga mobil ini, diantaranya
+Model yang akan digunakan dalam menyelesaikan permasalahan prediksi harga mobil ini, diantaranya KNN, Random Forest, dan Boosting. 
 
-* K-Nearest Neigbour
+Sebelum masuk ke tahapan modeling dengan ketiga model diatas, terlebih dahulu siapkan dataframe untuk analisa model nantinya. 
+
+```python
+models = pd.DataFrame(index=['train_mse', 'test_mse'], 
+                      columns=['KNN', 'RandomForest', 'Boosting'])
+```
+
+* K-Nearest Neighbor\
+cara kerja :
+
+```python
+from sklearn.neighbors import KNeighborsRegressor
+ 
+knn = KNeighborsRegressor(n_neighbors=10)
+knn.fit(X_train, y_train)
+y_pred_knn = knn.predict(X_train)
+```
+
+* Random Forest\
+cara kerja : 
+
+```python
+from sklearn.metrics import mean_squared_error
+from sklearn.ensemble import RandomForestRegressor
+ 
+
+RF = RandomForestRegressor(n_estimators=50, max_depth=16, random_state=55, n_jobs=-1)
+RF.fit(X_train, y_train)
+ 
+models.loc['train_mse','RandomForest'] = mean_squared_error(y_pred=RF.predict(X_train), y_true=y_train) 
+```
+
+* Boosting\
+cara kerja : 
+
+```python
+from sklearn.ensemble import AdaBoostRegressor
+ 
+boosting = AdaBoostRegressor(n_estimators=50, learning_rate=0.05, random_state=55)                             
+boosting.fit(X_train, y_train)
+models.loc['train_mse','Boosting'] = mean_squared_error(y_pred=boosting.predict(X_train), y_true=y_train)
+```
 
 ## Evaluation
-Bagian ini menjelaskan mengenai metrik evaluasi yang digunakan untuk mengukur kinerja model. Sebagai contoh, Anda memiih kasus klasifikasi dan menggunakan metrik **akurasi, precision, recall, dan F1 score**. Jelaskan mengenai beberapa hal berikut:
-- Penjelasan mengenai metrik yang digunakan dan bagaimana formulanya
-- Kelebihan dan kekurangan metrik
-- Bagaimana cara menerapkannya ke dalam kode.
+karena masalah yang diselesaikan termasuk regresi, maka metrik evaluasi yang digunakan yaitu MSE (Mean Sqared Error)
 
 
 
-**---Ini adalah bagian akhir laporan---**
+
 
 
 
