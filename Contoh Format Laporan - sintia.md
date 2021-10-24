@@ -1,7 +1,7 @@
 # Laporan Proyek Machine Learning - Ni Putu Sintia Wati
 
 ## Domain Proyek
-mobil sudah menjadi sarana transportasi yang sebagian besar orang telah memilikinya. Terdapat berbagai merek dan jenis mobil dengan spesifik yang memadai. Model bisnis yang diterapkan yaitu sebagai tim marketing, yang bertugas untuk menentukan harga produk yang akan dipasarkan. Para konsumen mencari informasi baik dari situs asli atau katalog mobil yang tersedia. 
+mobil menjadi sarana transportasi yang dimiliki sebagian besar lapisan masyarakat. Terdapat berbagai merek dan jenis mobil dengan spesifik yang bervariasi. Model bisnis yang diterapkan yaitu sebagai tim marketing, yang bertugas untuk menentukan harga produk yang akan dipasarkan. Para konsumen mencari informasi baik dari situs asli atau katalog mobil yang tersedia. 
 
 Untuk efisiensi, kita akan menerapkan teknik predictive modelling untuk memprediksi harga mobil tersebut sehingga dapat memudahkan konsumen dalam menentukan model mobil yang ingin dibelinya. Merek mobil yang dijadikan contoh yakni merek Audi. Dalam penjualannya, harga mobil dipengaruhi oleh fitur khusus, seperti model, tahun registrasi, harga (dalam satuan euro), jenis transmisi,jarak tempuh, jenis bahan bakar, pajak, mpg(penggunaan bahan bakar), dan kapasitas mesin. 
 
